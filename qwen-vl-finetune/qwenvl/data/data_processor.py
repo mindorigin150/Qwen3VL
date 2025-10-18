@@ -4,6 +4,7 @@ import logging
 import re
 import time
 import itertools
+import copy
 from dataclasses import dataclass, field
 from typing import Dict, Optional, Sequence, List, Tuple, Any
 from collections.abc import Sequence
@@ -679,14 +680,20 @@ class FlattenedDataCollatorForSupervisedDataset(DataCollatorForSupervisedDataset
 def make_supervised_data_module(processor, data_args) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
     train_dataset = LazySupervisedDataset(processor, data_args=data_args)
+    eval_dataset = None
+    if getattr(data_args, "dataset_eval_use", None):
+        data_args_eval = copy.deepcopy(data_args)
+        data_args_eval.dataset_use = data_args.dataset_eval_use
+        eval_dataset = LazySupervisedDataset(processor, data_args=data_args_eval)
+
     if data_args.data_flatten or data_args.data_packing:
         data_collator = FlattenedDataCollatorForSupervisedDataset(processor.tokenizer)
         return dict(
-            train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator
+            train_dataset=train_dataset, eval_dataset=eval_dataset, data_collator=data_collator
         )
     data_collator = DataCollatorForSupervisedDataset(processor.tokenizer)
     return dict(
-        train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator
+        train_dataset=train_dataset, eval_dataset=eval_dataset, data_collator=data_collator
     )
 
 

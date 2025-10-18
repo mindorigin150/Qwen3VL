@@ -22,6 +22,8 @@ import transformers
 import sys
 from pathlib import Path
 
+from peft import LoraConfig, get_peft_model
+
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 
@@ -159,11 +161,42 @@ def train(attn_implementation="flash_attention_2"):
         padding_side="right",
         use_fast=False,
     )
-    set_model(model_args, model)
+    # set_model(model_args, model)
 
-    if torch.distributed.get_rank() == 0:
-        model.visual.print_trainable_parameters()
-        model.model.print_trainable_parameters()
+    # if torch.distributed.get_rank() == 0:
+    #     model.visual.print_trainable_parameters()
+    #     model.model.print_trainable_parameters()
+    
+    if model_args.use_lora:
+        rank0_print("LoRA is enabled. Preparing LoRA model...")
+        
+        # Freeze all parameters
+        for param in model.parameters():
+            param.requires_grad = False
+        
+        # Create lora config
+        lora_config = LoraConfig(
+            r=model_args.lora_r,
+            lora_alpha=model_args.lora_alpha,
+            lora_dropout=model_args.lora_dropout,
+            target_modules=model_args.lora_target_modules.split(","),
+            bias="none",
+            task_type="CAUSAL_LM",
+        )
+        
+        # apply lora
+        model = get_peft_model(model, lora_config)
+        
+        if torch.distributed.get_rank() == 0:
+            # print lora trainable weights
+            model.print_trainable_parameters()
+    else:
+        # if not lora, original logic
+        set_model(model_args, model)
+
+        if torch.distributed.get_rank() == 0:
+            model.visual.print_trainable_parameters()
+            model.model.print_trainable_parameters()
     
     data_module = make_supervised_data_module(processor, data_args=data_args)
     trainer = Trainer(

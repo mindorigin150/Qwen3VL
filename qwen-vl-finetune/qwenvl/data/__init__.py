@@ -26,12 +26,27 @@ VIDEOCHATGPT = {
     "data_path": "PATH_TO_VIDEOCHATGPT_DATA",
 }
 
+INTERLEAVED_CO3D_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/all_tasks_train.jsonl",
+    "data_path": "",
+}
+
+INTERLEAVED_CO3D_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/all_tasks_val.jsonl",
+    "data_path": "",
+}
+
+# data_dict = {
+#     "cambrian_737k": CAMBRIAN_737K,
+#     "cambrian_737k_pack": CAMBRIAN_737K_PACK,
+#     "mp_doc": MP_DOC,
+#     "clevr_mc": CLEVR_MC,
+#     "videochatgpt": VIDEOCHATGPT,
+# }
+
 data_dict = {
-    "cambrian_737k": CAMBRIAN_737K,
-    "cambrian_737k_pack": CAMBRIAN_737K_PACK,
-    "mp_doc": MP_DOC,
-    "clevr_mc": CLEVR_MC,
-    "videochatgpt": VIDEOCHATGPT,
+    "interleaved-co3d-train": INTERLEAVED_CO3D_TRAIN,
+    "interleaved-co3d-val": INTERLEAVED_CO3D_VAL,
 }
 
 
