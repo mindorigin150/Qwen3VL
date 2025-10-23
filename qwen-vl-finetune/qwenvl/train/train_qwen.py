@@ -42,6 +42,7 @@ from qwenvl.train.argument import (
     TrainingArguments,
 )
 from transformers import AutoProcessor, Trainer
+from transformers import AutoConfig
 
 local_rank = None
 
@@ -102,7 +103,13 @@ def train(attn_implementation="flash_attention_2"):
     local_rank = training_args.local_rank
     os.makedirs(training_args.output_dir, exist_ok=True)
 
-    if "qwen3" in model_args.model_name_or_path.lower() and "a" in model_args.model_name_or_path.lower():
+    cfg = AutoConfig.from_pretrained(
+        model_args.model_name_or_path,
+        cache_dir=training_args.cache_dir,
+        trust_remote_code=False,  # 避免远程代码重映射类名
+    )
+
+    if cfg.model_type == "qwen3_vl_moe":
         model = Qwen3VLMoeForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -110,7 +117,7 @@ def train(attn_implementation="flash_attention_2"):
             dtype=(torch.bfloat16 if training_args.bf16 else None),
         )
         data_args.model_type = "qwen3vl"
-    elif "qwen3" in model_args.model_name_or_path.lower():
+    elif cfg.model_type == "qwen3_vl":
         model = Qwen3VLForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -118,7 +125,7 @@ def train(attn_implementation="flash_attention_2"):
             dtype=(torch.bfloat16 if training_args.bf16 else None),
         )
         data_args.model_type = "qwen3vl"
-    elif "qwen2.5" in model_args.model_name_or_path.lower():
+    elif cfg.model_type in ("qwen2_5_vl", "qwen2.5_vl"):
         model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -134,6 +141,7 @@ def train(attn_implementation="flash_attention_2"):
             dtype=(torch.bfloat16 if training_args.bf16 else None),
         )
         data_args.model_type = "qwen2vl"
+
 
     print(f'the initlized model is {model_args.model_name_or_path} the class is {model.__class__.__name__}')
     processor = AutoProcessor.from_pretrained(

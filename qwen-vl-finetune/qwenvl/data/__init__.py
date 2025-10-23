@@ -36,6 +36,62 @@ INTERLEAVED_CO3D_VAL = {
     "data_path": "",
 }
 
+# --- view synthesis ---
+VIEW_SYNTHESIS_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/view_synthesis_train.jsonl",
+    "data_path": "",
+}
+
+VIEW_SYNTHESIS_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/view_synthesis_val.jsonl",
+    "data_path": "",
+}
+
+# --- camera pose ---
+CAMERA_POSE_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/camera_pose_train.jsonl",
+    "data_path": "",
+}
+
+CAMERA_POSE_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/camera_pose_val.jsonl",
+    "data_path": "",
+}
+
+# --- identity matching ---
+IDENTITY_MATCHING_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/identity_matching_train.jsonl",
+    "data_path": "",
+}
+
+IDENTITY_MATCHING_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/identity_matching_val.jsonl",
+    "data_path": "",
+}
+
+# --- point matching ---
+POINT_MATCHING_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/point_matching_train.jsonl",
+    "data_path": "",
+}
+
+POINT_MATCHING_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/point_matching_val.jsonl",
+    "data_path": "",
+}
+
+# --- depth estimation ---
+DEPTH_ESTIMATION_TRAIN = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/depth_estimation_train.jsonl",
+    "data_path": "",
+}
+
+DEPTH_ESTIMATION_VAL = {
+    "annotation_path": "/run/determined/NAS1/public/lixinyuan/interleaved-co3d/qwen3_sft/data/depth_estimation_val.jsonl",
+    "data_path": "",
+}
+
+
 # data_dict = {
 #     "cambrian_737k": CAMBRIAN_737K,
 #     "cambrian_737k_pack": CAMBRIAN_737K_PACK,
@@ -47,6 +103,16 @@ INTERLEAVED_CO3D_VAL = {
 data_dict = {
     "interleaved-co3d-train": INTERLEAVED_CO3D_TRAIN,
     "interleaved-co3d-val": INTERLEAVED_CO3D_VAL,
+    "view-synthesis-train": VIEW_SYNTHESIS_TRAIN,
+    "view-synthesis-val": VIEW_SYNTHESIS_VAL,
+    "camera-pose-train": CAMERA_POSE_TRAIN,
+    "camera-pose-val": CAMERA_POSE_VAL,
+    "identity-matching-train": IDENTITY_MATCHING_TRAIN,
+    "identity-matching-val": IDENTITY_MATCHING_VAL,
+    "point-matching-train": POINT_MATCHING_TRAIN,
+    "point-matching-val": POINT_MATCHING_VAL,
+    "depth-estimation-train": DEPTH_ESTIMATION_TRAIN,
+    "depth-estimation-val": DEPTH_ESTIMATION_VAL,
 }
 
 
